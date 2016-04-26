@@ -9,3 +9,5 @@ Berksfile.lock
 .librarian
 Puppetfile.lock
 .kitchen.local.yml
+omnibus/.cache
+omnibus/pkg

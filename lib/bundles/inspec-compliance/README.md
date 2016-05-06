@@ -23,7 +23,7 @@ Compliance profiles can be executed in two mays:
 
 Before you start using the compliance plugin, you need a running [Chef Compliance](https://www.chef.io/compliance/) server. Please login and gather the access token:
 
-![Chef Compliance Token][chef-compliance-token]
+![Chef Compliance Token](images/cc-token.png)
 
 You can choose the access token (`--token`) or the refresh token (`--refresh_token`)
 
@@ -147,5 +147,3 @@ Finished in 6.35 seconds (files took 0.40949 seconds to load)
 -----> Kitchen is finished. (0m7.02s)
 zlib(finalizer): the stream was freed prematurely.
 ```
-
-[chef-compliance-token]: images/cc-token.png "Chef Compliance Token"

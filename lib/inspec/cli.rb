@@ -9,7 +9,6 @@ require 'json'
 require 'pp'
 require 'utils/base_cli'
 require 'utils/json_log'
-require 'yaml'
 
 class Inspec::InspecCLI < Inspec::BaseCLI # rubocop:disable Metrics/ClassLength
   class_option :diagnose, type: :boolean,
@@ -107,17 +106,24 @@ class Inspec::InspecCLI < Inspec::BaseCLI # rubocop:disable Metrics/ClassLength
 
   desc 'exec PATHS', 'run all test files at the specified PATH.'
   exec_options
-  option :attr_file, type: :array
+  option :attrs, type: :array
   def exec(*targets)
     diagnose
     o = opts.dup
-    # parse attribute file
-    unless o['attr_file'].nil?
-      o['attrs'] = {}
-      o['attr_file'].each do |file|
-        o['attrs'] = o['attrs'].merge(YAML.load_file(file))
+
+    # determine all attributes before the execution, fetch data from secrets backend
+    require 'inspec/secrets'
+    attributes = {}
+    secrets_targets = o['attrs']
+    unless secrets_targets.nil?
+      secrets_targets.each do |target|
+        secrets = Inspec::SecretsBackend.resolve(target)
+        attributes = attributes.merge(secrets.attributes) unless secrets.nil? || secrets.attributes.nil?
       end
     end
+    o['attrs'] = attributes
+
+    # run tests
     run_tests(targets, o)
   end
 

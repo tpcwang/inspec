@@ -56,6 +56,7 @@ module Inspec
 
     def info
       res = params.dup
+      # add information about the controls
       controls = res[:controls].map do |id, rule|
         next if id.to_s.empty?
         data = rule.dup
@@ -66,6 +67,12 @@ module Inspec
         [id, data]
       end
       res[:controls] = Hash[controls.compact]
+
+      # add information about the required attributes
+      res[:attributes] = res[:attributes].values.inject(:merge).map do | attr |
+        attr.to_hash
+      end
+
       res
     end
 
@@ -247,13 +254,16 @@ module Inspec
           f = load_rule_filepath(prefix, rule)
           load_rule(rule, f, controls, groups)
         end
+        params[:attributes] = runner.attributes
       else
         # load from context
         @runner_context.rules.values.each do |rule|
           f = load_rule_filepath(prefix, rule)
           load_rule(rule, f, controls, groups)
         end
+        params[:attributes] = @runner_context.attributes
       end
+      params
     end
 
     def load_rule_filepath(prefix, rule)

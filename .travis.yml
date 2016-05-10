@@ -17,6 +17,20 @@ matrix:
     script: bundle exec rake lint test test:resources config=test/test.yaml
   - rvm: 2.2
     script: N=5 bundle exec rake test:functional test:resources config=test/test-extra.yaml
+  - rvm: 2.2
+    script: N=5 bundle exec rake test:functional test:resources config=test/test-extra.yaml
+  - rvm: 2.2
+    bundler_args: "--without guard tools"
+    script: bundle exec rake test:integration OS='default-ubuntu-1204'
+  - rvm: 2.2
+    bundler_args: "--without guard tools"
+    script: bundle exec rake test:integration OS='default-ubuntu-1604'
+  - rvm: 2.2
+    bundler_args: "--without guard tools"
+    script: bundle exec rake test:integration OS='default-centos-7'
+  - rvm: 2.2
+    bundler_args: "--without guard tools"
+    script: bundle exec rake test:integration OS='default-debian-8'
 deploy:
   provider: rubygems
   on:

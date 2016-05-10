@@ -4,8 +4,8 @@ if os.linux?
 
   # direct access to params of apache conf
   describe apache_conf do
-    its('LogLevel') { should eq 'warn' }
-    its('MaxKeepAliveRequests') { should eq '100' }
+    its('LogLevel') { should cmp 'warn' }
+    its('MaxKeepAliveRequests') { should cmp '100' }
   end
 
   # only read one param

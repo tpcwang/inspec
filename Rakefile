@@ -52,7 +52,7 @@ namespace :test do
   task :integration do
     concurrency = ENV['CONCURRENCY'] || 1
     os = ENV['OS'] || ''
-    sh('sh', '-c', "cd #{path} && bundle exec kitchen test -c #{concurrency} #{os}")
+    sh('sh', '-c', "bundle exec kitchen test -c #{concurrency} #{os}")
   end
 
   task :ssh, [:target] do |_t, args|
